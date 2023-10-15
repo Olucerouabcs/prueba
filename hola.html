@@ -1,24 +1,558 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>fadbkafbjksfa</title>
+  <meta charset="UTF-8">
+  <title>Home</title>
+  <style>
+    /* Estilos CSS para el banner y las secciones */
+    body {
+    font-family: Arial, sans-serif;
+    background-color: #567EBB;
+    margin: 0;
+    padding: 0;
+    }
+
+    #top{
+    display: flex;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #2B4C7E;
+    }
+
+    #top h1{
+    display: flex;
+    width: 10%;
+    color: #DCE0E6;
+    text-align: center;
+    font-size: 60px;
+    padding-left: 60px;
+    }
+
+    #top #refs{
+      padding-left: 50px;
+      display: flex;
+      width: 50%;
+    }
+
+    #top #refs a{
+      display: flex;
+      margin: auto;
+      color: #DCE0E6;
+      text-decoration: none;
+      font-size: 30px;
+      
+    }
+
+    #app {
+    max-width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #567EBB;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilos para el banner principal */
+    header {
+    background-color: #007bff;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+    }
+
+    /* Estilos para los títulos de las secciones */
+    h2 {
+    font-size: 24px;
+    margin-top: 20px;
+    }
+
+    /* Estilos para las secciones */
+    section {
+    background-color: #ffffff;
+    padding: 20px;
+    margin-top: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    }
+    footer{
+      padding: 20px 0px;
+      width: 100%;
+      background-color: #2B4C7E;
+    }
+    .list{
+      width: 80%;
+      margin: 0 auto;
+      display: flex;
+    }
+    .li{
+      width: 15%;
+      margin: auto;
+      margin-left: 50px;
+      padding: 10px 15px;
+      color: #DCE0E6;
+      font-size: 16px;
+    }
+    .movies-filter {
+      display: flex;
+      overflow-x: scroll;
+      padding: 10px;
+    }
+
+    .movie-card {
+      flex: 0 0 auto;
+      margin-right: 20px;
+    }
+    
+    /* Estilos CSS para el switch */
+    #switch {
+      display: flex;
+      justify-content: space-between;
+      max-width: 200px;
+    }
+
+    #switch label {
+      display: inline-block;
+      width: 50%;
+      text-align: center;
+      background-color: #ccc;
+      color: #333;
+      padding: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    #switch label:hover {
+      background-color: #007bff; 
+      color: #fff; 
+    }
+
+    #switch input[type="radio"] {
+      display: none; 
+    }
+
+    #switch input[type="radio"]:checked + label {
+      background-color: #007bff; 
+      color: #fff; 
+    }
+
+    #switch input[type="radio"]:checked + label:hover {
+      background-color: #0056b3;
+    }
+    #switch label.selected {
+      background-color: #567EBB;
+      color: #fff; 
+    }
+    
+    a{
+      font-family: Arial, sans-serif;
+      font-weight: bold;            
+      font-size: 20px;               
+      color: #333;    
+      text-decoration: none; 
+    }
+
+  </style>
 </head>
 <body>
-    <div>
-        <h1>hola</h1>
+  <!-- Top de la pagina -->
+  <div id="top">
+      <h1>DIX +</h1>
+      <!-- Links de Referencias -->
+      <div id="refs">        
+        <a href="#">Inicio</a>
+        <a href="Movies.html">Peliculas</a>
+        <a href="Series.html">Series</a>
+      </div>
+  </div>
+  <div id="app">
+    <!-- Banner principal -->
+    <header>
+      <h1>Bienvenidos.<br>
+        Millones de películas, programas de televisión y personas por descubrir. Explora ahora.</h1>
+      <!-- Agregar banner principal aquí -->
+    </header>
+    <section>
+      <h2 v-if="selectedCategory === 'movies'">Peliculas</h2>
+      <h2 v-if="selectedCategory === 'series'">Series</h2>
+
+      <div id="switch">
+        <label :class="{ 'selected': selectedCategory === 'movies' }">
+          <input type="radio" v-model="selectedCategory" value="movies">
+          Películas
+        </label>
+        <label :class="{ 'selected': selectedCategory === 'series' }">
+          <input type="radio" v-model="selectedCategory" value="series">
+          Series
+        </label>
+      </div>
+    </section>
+    <!-- Sección de Tendencias -->
+    <section>
+      <h2>Tendencias</h2>
+      <div class="movies">
+        <div class="movies-filter" v-if="selectedCategory === 'movies'">
+          <div class="movie-card" v-for="movie in trendingMovies" :key="movie.id">
+            <a href="Movie.html">
+              <img :src="movie.poster_path ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path : placeholderImageUrl" alt="Poster de la película" >
+              <p><strong>{{ movie.title }}</strong></p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="series">
+        <div class="movies-filter" v-if="selectedCategory === 'series'">
+          <div class="movie-card" v-for="serie in trendingSeries" :key="serie.id">
+            <a href="Serie.html">
+              <img :src="serie.poster_path ? 'https://image.tmdb.org/t/p/w500' + serie.poster_path : placeholderImageUrl" alt="Poster de la serie">
+              <p><strong>{{ serie.name }}</strong></p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Lo más popular -->
+    <section>
+      <h2>Lo más popular</h2>
+      <div class="movies">
+        <div class="movies-filter" v-if="selectedCategory === 'movies'">
+          <div class="movie-card" v-for="movie in popularMovies" :key="movie.id">
+            <a href="Movie.html">
+              <img :src="movie.poster_path ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path : placeholderImageUrl" alt="Poster de la película">
+              <p><strong>{{ movie.title }}</strong></p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="series">
+        <div class="movies-filter" v-if="selectedCategory === 'series'">
+          <div class="movie-card" v-for="serie in popularSeries" :key="serie.id">
+            <a href="Serie.html">
+              <img :src="serie.poster_path ? 'https://image.tmdb.org/t/p/w500' + serie.poster_path : placeholderImageUrl" alt="Poster de la serie">
+              <p><strong>{{ serie.name }}</strong></p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Ver gratis -->
+    <section>
+      <h2>Ver gratis</h2>
+      <div class="movies">
+        <div class="movies-filter" v-if="selectedCategory === 'movies'">
+          <div class="movie-card" v-for="movie in freeMovies" :key="movie.id">
+            <a href="Movie.html">
+              <img :src="movie.poster_path ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path : placeholderImageUrl" alt="Poster de la película">
+              <p><strong>{{ movie.title }}</strong></p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="series">
+        <div class="movies-filter" v-if="selectedCategory === 'series'">
+          <div class="movie-card" v-for="serie in freeSeries" :key="serie.id">
+            <a href="Serie.html">
+              <img :src="serie.poster_path ? 'https://image.tmdb.org/t/p/w500' + serie.poster_path : placeholderImageUrl" alt="Poster de la serie">
+              <p><strong>{{ serie.name }}</strong></p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de Proximamente -->
+    <section>
+      <h2>Proximamente</h2>
+      <div class="movies">
+        <div class="movies-filter" v-if="selectedCategory === 'movies'">
+          <div class="movie-card" v-for="movie in upcomingMovies" :key="movie.id">
+            <a href="Movie.html">
+              <img :src="movie.poster_path ? 'https://image.tmdb.org/t/p/w500' + movie.poster_path : placeholderImageUrl" alt="Poster de la película">
+              <p><strong>{{ movie.title }}</strong></p>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="series">
+        <div class="movies-filter" v-if="selectedCategory === 'series'">
+          <div class="movie-card" v-for="serie in upcomingSeries" :key="serie.id">
+            <a href="Serie.html">
+              <img :src="serie.poster_path ? 'https://image.tmdb.org/t/p/w500' + serie.poster_path : placeholderImageUrl" alt="Poster de la serie">
+              <p><strong>{{ serie.name }}</strong></p>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <footer>
+    <div class="list">
+      <p class="li">TodoEnUno</p>
+      <p class="li">Privacidad</p>
+      <p class="li">Preguntas frecuentes</p>
+      <p class="li">Cuenta</p>
     </div>
-
-
-
-
-
-
-    
-    <div>
-        <h1>frijol</h1>
+    <div class="list">
+      <p class="li">Visitanos</p>
+      <p class="li">Terminos</p>
+      <p class="li">Empleo</p>
+      <p class="li">Avisos legales</p>
     </div>
-    
+    <div class="list">
+      <p class="li">Contactanos</p>
+      <p class="li">Ayuda</p>
+      <p class="li">Prensa</p>
+      <p class="li">Preferencias de cookies</p>
+    </div>
+    <div class="list">
+      <p class="li">Sobre nosotros</p>
+    </div>
+    <div class="list">
+      <p class="li">© 1997-2021 TodoEnUno</p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const { createApp, ref } = Vue;
+
+const app = createApp({
+  setup() {
+    // Datos para las diferentes secciones
+    const trendingMovies = ref([]);
+    const trendingSeries = ref([]);
+    const popularMovies = ref([]);
+    const popularSeries = ref([]);
+    const freeMovies = ref([]);
+    const freeSeries = ref([]);
+    const upcomingMovies = ref([]);
+    const upcomingSeries = ref([]);
+    const selectedCategory = ref("movies"); 
+    const placeholderImageUrl = ref('https://picsum.photos/500');
+
+
+    // Cargar datos para cada sección
+    fetchTrendingMovies();
+    fetchTrendingSeries()
+    fetchPopularMovies();
+    fetchPopularSeries();
+    fetchFreeMovies();
+    fetchFreeSeries();
+    fetchUpcomingMovies();
+    fetchUpcomingSeries();
+
+
+
+    async function fetchTrendingMovies() {
+      const apiKey = 'fb78fb1043f6585094c940285994b4d6'; 
+      const url = `https://api.themoviedb.org/3/trending/movie/day?language=es-US?api_key=${apiKey}`;
+      try {
+        const response = await fetch(url,{
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYjc4ZmIxMDQzZjY1ODUwOTRjOTQwMjg1OTk0YjRkNiIsInN1YiI6IjY1MTQzYjgyOWI4NjE2MDBmZjY3OWNlZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eGB5PtzldMglr8QBxbtSZJtH-qrvq7pXvRbhXHzNc1A'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          trendingMovies.value = data.results;
+        } else {
+          console.error('Error al cargar películas en tendencia desde TMDb.');
+        }
+      } catch (error) {
+        console.error('Error al cargar películas en tendencia:', error);
+      }
+    }
+    async function fetchTrendingSeries() {
+      const apiKey = 'fb78fb1043f6585094c940285994b4d6'; 
+      const url = `https://api.themoviedb.org/3/trending/tv/day?language=es-US?api_key=${apiKey}`;
+      try {
+        const response = await fetch(url,{
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYjc4ZmIxMDQzZjY1ODUwOTRjOTQwMjg1OTk0YjRkNiIsInN1YiI6IjY1MTQzYjgyOWI4NjE2MDBmZjY3OWNlZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eGB5PtzldMglr8QBxbtSZJtH-qrvq7pXvRbhXHzNc1A'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          trendingSeries.value = data.results;
+        } else {
+          console.error('Error al cargar series en tendencia desde TMDb.');
+        }
+      } catch (error) {
+        console.error('Error al cargar series en tendencia:', error);
+      }
+    }
+
+    async function fetchPopularMovies() {
+      const apiKey = 'fb78fb1043f6585094c940285994b4d6'; 
+      const url = `https://api.themoviedb.org/3/movie/popular?language=es-US?api_key=${apiKey}`;
+      try {
+        const response = await fetch(url,{
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYjc4ZmIxMDQzZjY1ODUwOTRjOTQwMjg1OTk0YjRkNiIsInN1YiI6IjY1MTQzYjgyOWI4NjE2MDBmZjY3OWNlZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eGB5PtzldMglr8QBxbtSZJtH-qrvq7pXvRbhXHzNc1A'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          popularMovies.value = data.results;
+        } else {
+          console.error('Error al cargar películas populares desde TMDb.');
+        }
+      } catch (error) {
+        console.error('Error al cargar películas populares:', error);
+      }
+    }
+    async function fetchPopularSeries() {
+      const apiKey = 'fb78fb1043f6585094c940285994b4d6'; 
+      const url = `https://api.themoviedb.org/3/tv/popular?language=es-US?api_key=${apiKey}`;
+      try {
+        const response = await fetch(url,{
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYjc4ZmIxMDQzZjY1ODUwOTRjOTQwMjg1OTk0YjRkNiIsInN1YiI6IjY1MTQzYjgyOWI4NjE2MDBmZjY3OWNlZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eGB5PtzldMglr8QBxbtSZJtH-qrvq7pXvRbhXHzNc1A'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          popularSeries.value = data.results;
+          
+        } else {
+          console.error('Error al cargar series populares desde TMDb.');
+        }
+      } catch (error) {
+        console.error('Error al cargar series populares:', error);
+      }
+    }
+
+    async function fetchFreeMovies() {
+      const apiKey = 'fb78fb1043f6585094c940285994b4d6'; 
+      const url = `https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=es-US&page=1&sort_by=popularity.desc&watch_region=MX&with_watch_monetization_types=free&api_key=${apiKey}`;
+      try {
+        const response = await fetch(url,{
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYjc4ZmIxMDQzZjY1ODUwOTRjOTQwMjg1OTk0YjRkNiIsInN1YiI6IjY1MTQzYjgyOWI4NjE2MDBmZjY3OWNlZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eGB5PtzldMglr8QBxbtSZJtH-qrvq7pXvRbhXHzNc1A'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          freeMovies.value = data.results;
+        } else {
+          console.error('Error al cargar películas gratis desde TMDb.');
+        }
+      } catch (error) {
+        console.error('Error al cargar películas gratis:', error);
+      }
+    }
+    async function fetchFreeSeries() {
+      const apiKey = 'fb78fb1043f6585094c940285994b4d6'; 
+      const url = `https://api.themoviedb.org/3/discover/tv?include_adult=false&include_video=false&language=es-US&page=1&sort_by=popularity.desc&watch_region=MX&with_watch_monetization_types=free&api_key=${apiKey}`;
+      try {
+        const response = await fetch(url,{
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmYjc4ZmIxMDQzZjY1ODUwOTRjOTQwMjg1OTk0YjRkNiIsInN1YiI6IjY1MTQzYjgyOWI4NjE2MDBmZjY3OWNlZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.eGB5PtzldMglr8QBxbtSZJtH-qrvq7pXvRbhXHzNc1A'
+          }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          freeSeries.value = data.results;
+        } else {
+          console.error('Error al cargar series gratis desde TMDb.');
+        }
+      } catch (error) {
+        console.error('Error al cargar series gratis:', error);
+      }
+    }
+
+    async function fetchUpcomingMovies() {
+      const apiKey = 'fb78fb1043f6585094c940285994b4d6';
+      const currentDate = new Date();
+      const oneYearFromNow = new Date();
+      oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+
+      const formattedCurrentDate = currentDate.toISOString().split('T')[0];
+      const formattedOneYearFromNow = oneYearFromNow.toISOString().split('T')[0];
+
+      const url = `https://api.themoviedb.org/3/discover/movie?language=es-US&api_key=${apiKey}&primary_release_date.gte=${formattedCurrentDate}&primary_release_date.lte=${formattedOneYearFromNow}`;
+
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer tu_token_de_autenticación_aquí'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          upcomingMovies.value = data.results;
+        } else {
+          console.error('Error al cargar películas próximas a estrenarse desde TMDb.');
+        }
+      } catch (error) {
+        console.error('Error al cargar películas próximas a estrenarse:', error);
+      }
+    }
+    async function fetchUpcomingSeries() {
+      const apiKey = 'fb78fb1043f6585094c940285994b4d6';
+      const currentDate = new Date();
+      const oneYearFromNow = new Date();
+      oneYearFromNow.setFullYear(oneYearFromNow.getFullYear() + 1);
+
+      const formattedCurrentDate = currentDate.toISOString().split('T')[0];
+      const formattedOneYearFromNow = oneYearFromNow.toISOString().split('T')[0];
+
+      const url = `https://api.themoviedb.org/3/discover/tv?language=es-US&api_key=${apiKey}&first_air_date.gte=${formattedCurrentDate}&first_air_date.lte=${formattedOneYearFromNow}`;
+
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: 'Bearer tu_token_de_autenticación_aquí'
+          }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          upcomingSeries.value = data.results;
+        } else {
+          console.error('Error al cargar series próximas a estrenarse desde TMDb.');
+        }
+      } catch (error) {
+        console.error('Error al cargar series próximas a estrenarse:', error);
+      }
+  }
+
+
+
+    return {
+      trendingMovies,
+      trendingSeries,
+      selectedCategory,
+      popularMovies,
+      popularSeries,
+      freeMovies,
+      freeSeries,
+      upcomingMovies,
+      upcomingSeries,
+      placeholderImageUrl,
+    };
+  }
+});
+
+app.mount('#app');
+
+</script>
 </body>
 </html>
